@@ -21,8 +21,7 @@ export default function TotalSupply() {
             }
     
             await getTotalSupply()
-            await getTotalValue()
-        
+
             setLoading(false)
         }
         fetchTotals();
@@ -32,36 +31,26 @@ export default function TotalSupply() {
     async function getTotalSupply() {
         try {
           // Interact with contract
-          const provider = new ethers.providers.Web3Provider(window.ethereum)
-          const contract = new ethers.Contract(process.env.NEXT_PUBLIC_MINTER_ADDRESS, Minter.abi, provider)
-          const data = await contract.totalSupply()
+            // Fetch data from contract
+            const provider = new ethers.providers.Web3Provider(window.ethereum)
+            const signer = provider.getSigner()
+            const contract = new ethers.Contract(process.env.NEXT_PUBLIC_MINTER_ADDRESS, Minter.abi, provider)
+            const address = await signer.getAddress()
+            // Get amount of tokens owned by this address
+            const tokensOwned = await contract.balanceOf(address)
       
-          setTotalMinted(data.toNumber());
-        } catch(error) {
-            console.log(error)
-        }
-    }
-
-     // Get total value collected by the smart contract
-     async function getTotalValue() {
-        try {
-          // Interact with contract
-          const provider = new ethers.providers.Web3Provider(window.ethereum)
-          const contract = new ethers.Contract(process.env.NEXT_PUBLIC_MINTER_ADDRESS, Minter.abi, provider)
-          const data = await contract.getBalance()
-      
-          setTotalValue(ethers.utils.formatEther(data).toString());
+          setTotalMinted(tokensOwned.toNumber());
         } catch(error) {
             console.log(error)
         }
     }
 
     return (
-        <>
-            <p>
-                Tokens minted: { loading ? 'Loading...' : `${totalMinted}/${TOTAL}` }<br />
-                Contract value: { loading ? 'Loading...' : `${totalValue}ETH` }
-            </p>
-        </>
+        <h1 className="text-2xl font-semibold text-gray-400 mb-4">
+            {loading
+                ? 'Loading...'
+                : (`${totalMinted + " "} / ${TOTAL.toLocaleString()}`)
+            }
+        </h1>
     )
 }
