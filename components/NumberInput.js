@@ -5,7 +5,7 @@ const NumberInput = ({mintQuantity, setMintQuantity, mintError, mintQuantityInpu
         <div className='mb-4'>
             <div className='flex flex-row'>
                 <button
-                    className="border-2 border-r-0 hover:bg-yellow-200 text-black py-4 px-8 rounded-l"
+                    className="border-2 hover:bg-yellow-200 text-black py-4 px-8 rounded-l"
                     onClick={() => setMintQuantity(mintQuantity-1)}
                 >-</button>
                 <input

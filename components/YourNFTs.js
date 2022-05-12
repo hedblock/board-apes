@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import { hasEthereum, requestAccount } from '../utils/ethereum'
 import Minter from '../src/artifacts/contracts/Minter.sol/Minter.json'
+import Image from "next/image";
 
 export default function YourNFTs() {
     // UI state
@@ -29,14 +30,23 @@ export default function YourNFTs() {
           }
     }
 
-    if(nfts.length < 1) return null;
-
     return (
-        <>
-            <h2 className="text-2xl font-semibold mb-2">Your NFTs</h2>
+        <div>
+            <h2 className="text-4xl font-semibold mb-16 text-center">Your NFTs</h2>
             <ul className="grid grid-cols-4 gap-6">
-                { nfts.map( (nft) => <div key={nft} className="bg-gray-100 p-4 h-24 lg:h-28 flex justify-center items-center text-lg">{nft.toNumber()}</div>)}
+                { nfts.map( (nft) => (
+                    <div key={nft} className="bg-white flex flex-col justify-center items-center text-2 shadow-xl hover:shadow-2xl rounded-xl">
+                        <Image
+                            height={1122}
+                            width={1122}
+                            src='/BoardApe.jpg'
+                            className='rounded-t-lg'
+                        />
+                        <div className='p-4'>
+                            Board Ape #{nft.toNumber()}
+                        </div>
+                    </div>))}
             </ul>
-        </>
+        </div>
     )
 }
