@@ -7,8 +7,8 @@ module.exports = {
   ],
   theme: {
     colors: {
-      background: '#131D25',
-      backgroundHover: "#0f172a",
+      background: '#001111',
+      backgroundHover: "#484848",
       accent1: "#627AB0",
       accent2: "#356FBB",
       accent3: "#F8E1F1",

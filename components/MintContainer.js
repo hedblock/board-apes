@@ -11,12 +11,11 @@ export default function MintContainer() {
 
     return (
         <div className="flex flex-col md:flex-row z-10 bg-background rounded-2xl max-w-4xl align-center">
-            {account && 
-                <CollectionDetails 
-                    mintPrice={mintPrice}
-                    maxSupply={maxSupply}
-                    totalSupply={totalSupply}
-                />}
+            <CollectionDetails 
+                mintPrice={mintPrice}
+                maxSupply={maxSupply}
+                totalSupply={totalSupply}
+            />
             <MintDetails 
                 publicSaleActive={publicSaleActive} 
                 publicMintCounter={publicMintCounter}
