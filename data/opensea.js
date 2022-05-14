@@ -1,5 +1,5 @@
-export const contractAddress = "0x495f947276749Ce646f68AC8c248420045cb7b5e"
-export const abi = `[
+export const openseaContractAddress = "0x495f947276749Ce646f68AC8c248420045cb7b5e"
+export const openseaABI = `[
 	{
 		"anonymous": false,
 		"inputs": [

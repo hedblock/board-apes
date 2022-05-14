@@ -1,14 +1,14 @@
 import {useCall, useContractFunction, Mainnet} from '@usedapp/core';
 import { Contract, utils } from 'ethers';
 
-import {contractAddress, abi} from '../data/opensea';
+import {openseaContractAddress, openseaABI} from '../data/opensea';
 import {affen} from '../data/affen';
 
-import BoardApes from '../src/artifacts/contracts/BoardApes.sol/BoardApes.json';
+import {boardApesABI} from '../data/boardApes';
 
 export function useValue(name){
     const { value, error } = useCall({
-        contract: new Contract(process.env.NEXT_PUBLIC_MINTER_ADDRESS, BoardApes.abi),
+        contract: new Contract(process.env.NEXT_PUBLIC_MINTER_ADDRESS, boardApesABI),
         method: name,
     }) ?? {}
     if(error) {
@@ -31,7 +31,7 @@ export function useOwnedAffen(){
     // const {account} = useEthers();
     const account = "0x8125ef62932875F3DFAb6C9b39Fa12C087397CB5";
     const { value, error } = useCall({
-        contract: new Contract(contractAddress, abi),
+        contract: new Contract(openseaContractAddress, openseaABI),
         method: 'balanceOfBatch',
         chainId: Mainnet.chainId,
         args: [Array(affen.length).fill(account), affen],
@@ -44,13 +44,13 @@ export function useOwnedAffen(){
 }
 
 export function usePublicMint(){
-    const contract = new Contract(process.env.NEXT_PUBLIC_MINTER_ADDRESS, BoardApes.abi);
+    const contract = new Contract(process.env.NEXT_PUBLIC_MINTER_ADDRESS, boardApesABI);
     const { state, send } = useContractFunction(contract, 'mint', {})
     return (quantity) => send(quantity, { value: utils.parseEther((quantity * 0.08).toString()) });
 }
 
 export function useAffenMint(){
-    const contract = new Contract(process.env.NEXT_PUBLIC_MINTER_ADDRESS, BoardApes.abi);
+    const contract = new Contract(process.env.NEXT_PUBLIC_MINTER_ADDRESS, boardApesABI);
     const { state, send } = useContractFunction(contract, 'affenMint', {})
     return (tokenIds) => send(tokenIds);
 }
