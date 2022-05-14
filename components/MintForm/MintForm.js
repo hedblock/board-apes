@@ -1,13 +1,10 @@
 
-import {useState, useRef} from 'react';
-
-import BoardApes from '../../src/artifacts/contracts/BoardApes.sol/BoardApes.json';
+import {useState} from 'react';
 
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import AffeMitWaffe from './AffeMitWaffe';
-import Whitelist from './Whitelist';
 import Public from './Public';
 
 export default function MintForm({publicSaleActive}) {
