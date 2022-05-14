@@ -12,43 +12,36 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
  * @author Jason Hedman
  * @notice This contract handles minting Board Apes ERC721 tokens.
  */
-contract Minter is ERC721A, ReentrancyGuard, Ownable, Pausable {
+contract BoardApes is ERC721A, ReentrancyGuard, Ownable, Pausable {
 
     using ECDSA for bytes32;
     using Strings for uint256;
 
-    // Public vars
     string public baseTokenURI;
     uint256 public price = 0.08 ether;
+    uint256 public immutable maxSupply = 1500;
+    
+    uint256 public maxMintQuantity = 10;
 
-    // Immutable vars
-    uint256 public immutable maxSupply;
+    uint256 public immutable publicMintMax = 1000;
+    uint256 public publicMintCounter = 0;
+
+    mapping(uint256 => bool) private affeRedeemed;
 
     /**
      * @notice Construct a Board Apes instance
-     * @param name Token name
-     * @param symbol Token symbol
      * @param baseTokenURI_ Base URI for all tokens
-     * @param maxSupply_ Max Supply of tokens
      */
     constructor(
-        string memory name,
-        string memory symbol,
-        string memory baseTokenURI_,
-        uint256 maxSupply_
-    ) ERC721A(name, symbol) {
-        require(maxSupply_ > 0, "INVALID_SUPPLY");
+        string memory baseTokenURI_
+    ) ERC721A("Board Apes", "BA") {
         baseTokenURI = baseTokenURI_;
-        maxSupply = maxSupply_;
     }
 
-    mapping (address => uint256) public totalMintsPerAddress;
-
-    bool public isSaleActive = true;
+    bool public isPublicSaleActive = false;
 
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(_exists(tokenId), "URI query for nonexistent token");
-
         return string(abi.encodePacked(_baseURI(), tokenId.toString(), ".json"));
     }
 
@@ -56,12 +49,9 @@ contract Minter is ERC721A, ReentrancyGuard, Ownable, Pausable {
         return baseTokenURI;
     }
 
-    /**
-     * To be updated by contract owner to allow gold and silver lists members
-     */
     function setSaleState(bool _saleActiveState) public onlyOwner {
-        require(isSaleActive != _saleActiveState, "NEW_STATE_IDENTICAL_TO_OLD_STATE");
-        isSaleActive = _saleActiveState;
+        require(isPublicSaleActive != _saleActiveState, "NEW_STATE_IDENTICAL_TO_OLD_STATE");
+        isPublicSaleActive = _saleActiveState;
     }
 
     /**
@@ -92,38 +82,30 @@ contract Minter is ERC721A, ReentrancyGuard, Ownable, Pausable {
         _unpause();
     }
 
-    /**
-     * @notice Allow for minting of tokens up to the maximum allowed for a given address.
-     * The address of the sender and the number of mints allowed are hashed and signed
-     * with the server's private key and verified here to prove whitelisting status.
-     */
-    function mint(uint256 mintNumber) external payable virtual nonReentrant {
-        require(isSaleActive, "SALE_IS_NOT_ACTIVE");
-        // Imprecise floats are scary. Front-end should utilize BigNumber for safe precision, but adding margin just to be safe to not fail txs
-        require(msg.value >= ((price * mintNumber) - 0.0001 ether) && msg.value <= ((price * mintNumber) + 0.0001 ether), "INVALID_PRICE");
+    function mint(uint256 mintQuantity) external payable virtual nonReentrant {
+        require(isPublicSaleActive, "SALE_IS_NOT_ACTIVE");
+        require(mintQuantity > 0 && mintQuantity <= maxMintQuantity, "INVALID_MINT_QUANTITY");
+        require(msg.value >= ((price * mintQuantity) - 0.0001 ether) && msg.value <= ((price * mintQuantity) + 0.0001 ether), "INVALID_PRICE");
 
+        require(publicMintCounter + mintQuantity <= publicMintMax, "NOT_ENOUGH_PUBLIC_MINTS");
+        
         uint256 currentSupply = totalSupply();
+        require(currentSupply + mintQuantity <= maxSupply, "NOT_ENOUGH_MINTS_AVAILABLE");
 
-        require(currentSupply + mintNumber <= maxSupply, "NOT_ENOUGH_MINTS_AVAILABLE");
+        _safeMint(msg.sender, mintQuantity);
+        publicMintCounter += mintQuantity;
 
-        totalMintsPerAddress[msg.sender] += mintNumber;
-
-        _safeMint(msg.sender, mintNumber);
-
-        if (currentSupply + mintNumber == maxSupply) {
-            isSaleActive = false;
+        if (currentSupply + mintQuantity == maxSupply) {
+            isPublicSaleActive = false;
         }
     }
 
-    /**
-     * @notice Allow owner to send `mintNumber` tokens without cost to multiple addresses
-     */
-    function gift(address[] calldata receivers, uint256 mintNumber) external onlyOwner {
-        require((totalSupply() + (receivers.length * mintNumber)) <= maxSupply, "MINT_TOO_LARGE");
-
-        for (uint256 i = 0; i < receivers.length; i++) {
-            _safeMint(receivers[i], mintNumber);
+    function affenMint(uint256[] calldata _tokenIds) external payable virtual nonReentrant {
+        for(uint256 i = 0; i < _tokenIds.length; i++) {
+            require(!affeRedeemed[_tokenIds[i]], "Affe already redeemed");
+            affeRedeemed[_tokenIds[i]] = true;
         }
+        _safeMint(msg.sender, _tokenIds.length * 2);
     }
 
     /**

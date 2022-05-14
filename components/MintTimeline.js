@@ -1,39 +1,18 @@
-import Timeline from '@mui/lab/Timeline';
-import TimelineItem from '@mui/lab/TimelineItem';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineDot from '@mui/lab/TimelineDot';
-import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
-
-export default function MintTimeline({currentStage}) {
-
-    const stages = [
-        {stage: 'Affe mit Waffe Mint', tokenIds: '0-500'}, 
-        {stage: 'Whitelist Mint', tokenIds: '500-1000'}, 
-        {stage: 'Public Mint', tokenIds: '1000-2000'}
-    ];
-
+export default function MintTimeline({publicMintCounter, totalSupply}) {
     return (
-        <div>
-            <Timeline>
-                {
-                    stages.map((stage, index) => (
-                        <TimelineItem key={index}>
-                            <TimelineOppositeContent color="white">
-                                {stage.tokenIds}
-                            </TimelineOppositeContent>
-                            <TimelineSeparator>
-                                <TimelineDot color={currentStage === index ? 'primary' : 'grey'} />
-                                {index !== stages.length - 1 && <TimelineConnector />}
-                            </TimelineSeparator>
-                            <TimelineContent color='white'>
-                                {stage.stage}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ))
-                }
-            </Timeline>
+        <div className='w-full mb-8'>
+            <h1 className='text-text text-xl font-bold mb-4 text-center'>Mint Progress</h1>
+            <div className='flex flex-row space-x-1 w-full'>
+                <div style={{flexGrow: 1}} className='p-2 rounded-l-lg bg-accent2 shadow-xl'>
+                    <p className="font-bold text-xl text-text">{(totalSupply && publicMintCounter) 
+                        && totalSupply.sub(publicMintCounter).toString()}/500</p>
+                    <p className='text-sm text-subtext'>Affe Mint</p>
+                </div>
+                <div style={{flexGrow: 2}} className='p-2 rounded-r-lg bg-accent1'>
+                    <p className="font-bold text-text text-xl">{publicMintCounter && publicMintCounter.toString()}/1000</p>
+                    <p className="text-subtext text-sm">Public Mint</p>
+                </div>
+            </div>
         </div>
     );
 }

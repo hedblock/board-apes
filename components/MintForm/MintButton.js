@@ -1,12 +1,14 @@
 
 export default function MintButton({onClick, disabled, text}) {
 
-    const activeButton = "bg-blue-500 hover:bg-blue-400 text-white py-4 px-8 w-full rounded-lg"
-    const inactiveButton = "bg-gray-500 text-white py-4 px-8 w-full rounded-lg disabled:cursor-not-allowed"
+    const activeButton = "bg-accent2 hover:bg-blue-400"
+    const inactiveButton = "bg-disabled disabled:cursor-not-allowed";
+
+    const baseStyle = "text-text font-medium py-4 px-8 w-full rounded-lg "
 
     return (
         <button
-            className={disabled ? inactiveButton : activeButton}
+            className={baseStyle + (disabled ? inactiveButton : activeButton)}
             onClick={onClick}
             disabled={disabled}
         >
