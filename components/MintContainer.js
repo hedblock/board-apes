@@ -1,4 +1,3 @@
-import { Paper } from "@mui/material";
 import { useEthers } from "@usedapp/core";
 import CollectionDetails from "./CollectionDetails";
 import MintDetails from "./MintDetails";
@@ -11,7 +10,7 @@ export default function MintContainer() {
     const {mintPrice, maxSupply, totalSupply, publicSaleActive, publicMintCounter} = useCollectionDetails();
 
     return (
-        <Paper className="flex flex-col md:flex-row z-10 bg-background rounded-2xl max-w-4xl align-center" elevation={24}>
+        <div className="flex flex-col md:flex-row z-10 bg-background rounded-2xl max-w-4xl align-center">
             {account && 
                 <CollectionDetails 
                     mintPrice={mintPrice}
@@ -23,6 +22,6 @@ export default function MintContainer() {
                 publicMintCounter={publicMintCounter}
                 totalSupply={totalSupply}
             />
-        </Paper>
+        </div>
     )
 }

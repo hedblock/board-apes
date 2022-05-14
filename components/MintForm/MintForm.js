@@ -15,7 +15,7 @@ export default function MintForm({publicSaleActive}) {
 
     const [mintType, setMintType] = useState(publicSaleActive ? 'public': 'affe');
 
-    const handleChange = (event, newType) => {
+    const handleChange = (_, newType) => {
         setMintType(newType);
       };
 
