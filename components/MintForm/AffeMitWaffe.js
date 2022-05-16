@@ -1,7 +1,4 @@
 import {useState} from 'react';
-
-import { Paper } from '@mui/material';
-
 import MintButton from './MintButton.js';
 import { useOwnedAffen } from '../../hooks/boardApesHooks.js';
 
@@ -22,16 +19,16 @@ export default function AffeMitWaffe(mintNFTs) {
                         <div className="flex flex-row flex-wrap">
                         {
                             ownedAffes.map(ownedAffe => (
-                                <Paper 
+                                <div 
                                     key={ownedAffe.id} 
-                                    className={"flex flex-col items-center justify-center h-12 w-12 mx-2 border border-gray-600 bg-accent2" + (!selectedAffes.includes(ownedAffe) ? "  opacity-70 hover:opacity-100 " : " hover:opacity-70")}
+                                    className={"flex flex-col items-center justify-center h-12 w-12 mx-2 border rounded-md border-gray-600 bg-accent2" + (!selectedAffes.includes(ownedAffe) ? "  opacity-70 hover:opacity-100 " : " hover:opacity-70")}
                                     elevation={16}
                                     onClick={() => selectedAffes.includes(ownedAffe) 
                                         ? setSelectedAffes(selectedAffes.filter(selectedAffe => selectedAffe !== ownedAffe))
                                         : setSelectedAffes([...selectedAffes, ownedAffe])}
                                 >
                                     <p className={"text-text text-sm " + (selectedAffes.includes(ownedAffe) && "font-bold")}>{ownedAffe}</p>
-                                </Paper>
+                                </div>
                             ))
                         }
                         </div>
