@@ -31,4 +31,5 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build
+    - run: npx hardhat compile
     - run: npx hardhat test
