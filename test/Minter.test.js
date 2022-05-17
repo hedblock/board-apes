@@ -99,7 +99,7 @@ describe("Board Apes", function() {
           const tokenIds = Array.from({ length: affen.length }, (_, i) => i)
           await contract.setAffeIds(tokenIds, affen).should.be.fulfilled;
           await Promise.all(affen.map(async (affe, i) => {
-            return (await contract.affenIds(i)).should.be.equal(affe);
+            return (await contract.affeIds(i)).should.be.equal(affe);
           }));
         });
 
@@ -107,7 +107,7 @@ describe("Board Apes", function() {
           const tokenIds = Array.from({ length: affen.length }, (_, i) => i)
           await contract.setAffeIds(tokenIds, affen).should.be.fulfilled;
           await contract.setAffeIds([0], [affen[1]]).should.be.fulfilled;
-          (await contract.affenIds(0)).should.be.equal(affen[1]);
+          (await contract.affeIds(0)).should.be.equal(affen[1]);
         })
 
         it('initialize affe ids with wrong length', async () => {
