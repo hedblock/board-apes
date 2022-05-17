@@ -24,7 +24,10 @@ module.exports = {
   },
   networks: {
     hardhat: {
-      chainId: +process.env.HARDHAT_CHAIN_ID || 1337
+      // chainId: +process.env.HARDHAT_CHAIN_ID || 1337,
+      forking: {
+        url: "https://eth-mainnet.alchemyapi.io/v2/KCaPPrH9pCyscIUFg7IlU2fTvmOActZt",
+      }
     },
   }
 };
