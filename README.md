@@ -1,8 +1,8 @@
-# NFT Minting dApp Starter
+# Board Apes Minting Page
 
-A full stack dApp starter for minting NFTs built on Ethereum (Solidity) with Next.js (React).
+A full stack dApp starter for minting the Board Apes NFT collection built on Ethereum (Solidity) with Next.js (React).
 
-This repo contains boilerplate code for minting NFTs from the client-side using [Solidity](https://soliditylang.org/), [React](https://reactjs.org/) and [TailwindCSS](https://tailwindcss.com/).
+This repo contains code for minting NFTs from the client-side using [Solidity](https://soliditylang.org/), [React](https://reactjs.org/) and [TailwindCSS](https://tailwindcss.com/).
 
 ![NFT Minting dApp Starter](/public/screenshot.png)
 
@@ -12,16 +12,6 @@ This repo contains boilerplate code for minting NFTs from the client-side using 
 - [MetaMask wallet browser extension](https://metamask.io/download.html).
 
 ## Getting Started
-
-### Clone This Repo
-
-Use `git clone https://github.com/tomhirst/nft-minting-dapp-starter.git` to get the files within this repository onto your local machine.
-
-### Environment Setup
-
-Duplicate `.env.example` to `.env` and fill out the `HARDHAT_CHAIN_ID` environment variable. The port from the example file, if it's free, will be fine in most cases.
-
-Run `npm install`.
 
 ### Running The Smart Contract Locally
 
@@ -93,19 +83,3 @@ To lint your front-end code, use `npm run lint`.
 To test the smart contract, run `npx hardhat test`.
 
 Basic tests can be found in `test/Minter.test.js`.
-
-## Roadmap
-
-- Show the funds available in the connected account's wallet
-- Add common owner functionality to the contract
-    - Reserve tokens
-    - Flip sale state
-    - Set starting index
-    - Set base URI for asset metadata
-    - Set provenance hash
-    - Withdraw funds
-- Attach image data to minted tokens with IPFS
-- Deploy to the Ropsten test network
-- Introduce code style rules and linting
-- Write more extensive tests
-- Create a TypeScript fork
